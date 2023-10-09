@@ -2,7 +2,6 @@ import pygame as pg
 import random as ra
 
 pg.init()
-
 screen_width, screen_height = 800, 600
 
 FPS = 24    # frame per second
@@ -20,24 +19,19 @@ sys_font = pg.font.SysFont('arial', 34)
 font = pg.font.Font('../04B_19.TTF', 48)
 
 # display.fill('blue', (0, 0, screen_width, screen_height))
-display.blit(bg_img, (0, 0))        # image.tr
+display.blit(bg_img, (0, 0))       # image.tr
 
-text_img = sys_font.render('Score 123', True, 'white')
 # display.blit(text_img, (100, 50))
 
 # экран конца игры
 game_over_text = font.render('Game Over', True, 'red')
 wgo, hgo = game_over_text.get_size()
-# display.blit(game_over_text, (screen_width/2 - w/2, screen_height / 2 - h/2))
 
-n = ['3', '/3']
-ammos = int(n[0])
-ammorelised = ''.join(n)
-ammoleft = font.render(ammorelised, True, 'white')
-
+# очки
 score_text = font.render("score:", True, 'white')
 ws, hs = score_text.get_size()
 
+# для подсчета очков
 score = '0'
 score_num_text = font.render(score, True, 'white')
 restart_help = font.render("Press 'r' to restart", True, 'white')
@@ -69,10 +63,9 @@ enemy_x = 0
 enemy_y = 0
 enemy_alive = False
 gameOn = True
-a = '10000'
-EnemyShallPass = a
+aspire = '5'
+EnemyShallPass = aspire
 EnemyCanFlow = font.render(EnemyShallPass, True, 'red')
-weretogo = 0
 
 diap1 = 0
 Etap = False
@@ -161,11 +154,16 @@ def display_redraw():
         display.blit(bg_img, (0, 0))
     display.fill('black', (0, 0, diap1, screen_height))
     display.fill('black', (screen_width-diap1, 0, diap1, screen_height))
+    if diap1 != 0:
+        arkadiy1 = ra.randint(0, diap1)
+        ark = screen_width-diap1
+        arkadiy2 = ra.randint(ark, screen_width)
+        display.fill('white', (arkadiy1, 0, 5, screen_height))
+        display.fill('white', (arkadiy2, 0, 5, screen_height))
     display.blit(player_img, (player_x, player_y))
     display.blit(enemy_img, (enemy_x, enemy_y))
     EnemyCanFlow = font.render(EnemyShallPass, True, 'red')
     display.blit(EnemyCanFlow, (screen_width/100, 0))
-    # display.blit(ammoleft, (screen_width-100, screen_height-100))
     if bullet_live:
         display.blit(bullet_img, (bullet_x, bullet_y))
     pg.display.update()
@@ -190,7 +188,7 @@ def event_processing():
                 player_dx = player_velocity
             if event.key == pg.K_r:
                 if not gameOn:
-                    EnemyShallPass = a
+                    EnemyShallPass = aspire
                     score = 0
                     gameOn = True
                     diap1 = 0
@@ -203,9 +201,6 @@ def event_processing():
                 bullet_create()
     clock.tick(FPS)
     return running
-
-def opr():
-    return ra.randint(1, 2)
 
 # усложнение со врененем
 def slojno():
