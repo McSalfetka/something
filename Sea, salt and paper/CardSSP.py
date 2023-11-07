@@ -51,4 +51,4 @@ class Card:
                 """ Все карты для создания колоды"""
                 return [Card(types, color) for color in Card.COLORS for types in Card.TYPES]
 
-# print(Card.create('crab_b'))
+#print(Card.create('crab_b'))

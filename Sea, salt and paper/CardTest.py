@@ -21,3 +21,4 @@ def test_create_card_list():
 def test_create_wrong_color():
     with pytest.raises(ValueError):
         c = Card.create('crab_n')
+#print()
