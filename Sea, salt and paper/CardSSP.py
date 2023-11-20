@@ -14,14 +14,14 @@ class Card:
                         raise ValueError(f'Wrong color {color}')
 
         def __repr__(self):
-                return f'{self.types} {self.color}'
+                keyk = ''
+                for k, v in Card.COLOR_LETTERS.items():
+                        if v == self.color:
+                                keyk = k
+                return f'{self.types}_{keyk}'
 
         def __eq__(self, other):
                 return self.color == other.color and self.types == other.types
-
-        # def accept(self, top_card):
-        #         """Возвр. True если можно сыграть пару карт"""
-        #         return self.color == top_card.color or self.types == top_card.types
 
         @staticmethod
         def create(text: str):
@@ -38,7 +38,8 @@ class Card:
                         else:
                                 letter += i
                 letter1 = Card.COLOR_LETTERS.get(letter, None)
-                # print(types, letter)
+                # print(types, letter1)
+                # print(Card(types, letter1))
                 return Card(types, letter1)
 
         @staticmethod
@@ -51,4 +52,8 @@ class Card:
                 """ Все карты для создания колоды"""
                 return [Card(types, color) for color in Card.COLORS for types in Card.TYPES]
 
-#print(Card.create('crab_b'))
+        def accept(self, some):
+                return self.types == some.types
+# print(Card.card_list('crab_b mermaids_w fish_b crab_o fish_lg'))
+
+
