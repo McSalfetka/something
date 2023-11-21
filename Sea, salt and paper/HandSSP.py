@@ -24,16 +24,6 @@ class Hand:
     def get_playable_cards(self, some: Card):
         """ Возвращает список пар карт, которые можно было бы сыграть"""
         return [card for card in self.cards if some.accept(card)]
-        # card = []
-        # print(list(self.cards), 'asdafefgsdqw')
-        # for i in self.cards:
-        #     for j in range(1, len(self.cards)):
-        #         if i == self.cards[j]:
-        #             if i not in card:
-        #                 card.append(i)
-        #             if self.cards[j] not in card:
-        #                 card.append(self.cards[j])
-        # return card
 
     def remove_card(self, card: Card):
         """ Удаляет из руки карту card (чтобы положить ее в отбой)"""
