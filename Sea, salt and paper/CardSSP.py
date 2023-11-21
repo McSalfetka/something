@@ -119,3 +119,4 @@ class Card:
         def accept(self, some):
                 return self.types == some.types
 
+#

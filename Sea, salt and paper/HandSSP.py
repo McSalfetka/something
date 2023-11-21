@@ -38,3 +38,4 @@ class Hand:
         return Hand(Card.card_list(text))
 
 
+#

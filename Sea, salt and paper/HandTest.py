@@ -32,3 +32,4 @@ def text_index():
     assert hand[0] == Card('crab', 'blue')
     assert hand[1] == Card('fish', 'blue')
     assert hand[2] == Card('fish', 'light green')
+#

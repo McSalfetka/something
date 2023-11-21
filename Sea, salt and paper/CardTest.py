@@ -25,3 +25,4 @@ def test_create_wrong_color():
     with pytest.raises(ValueError):
         c = Card.create('crab_n')
 
+#
