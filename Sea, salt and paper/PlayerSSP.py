@@ -29,7 +29,7 @@ class Player:
     def add_card_to_hand(self, card: Card):
         self.hand.add_card(card)
 
-
+#
 # text = 'crab_b1 mermaids_w fish_b1 crab_o fish_lg'
 # h = list(Hand(Card.card_list(text)))
 # print(h)

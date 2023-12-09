@@ -20,7 +20,7 @@ class Hand:
     def __getitem__(self, item):
         """дает hand[i] и hand[i:j]"""
         return self.cards[item]
-
+#
     def get_playable_cards(self):
         """ Возвращает список пар карт, которые можно было бы сыграть"""
         spis = []

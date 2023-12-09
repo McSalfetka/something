@@ -20,7 +20,7 @@ def test_remove_card():
     assert str(hand) == 'mermaids_w fish_b1 crab_o'
     hand.remove_card(Card("crab", 'orange'))
     assert str(hand) == 'mermaids_w fish_b1'
-
+#
 def test_len():
     text = 'crab_b1 mermaids_w fish_b1'
     hand = Hand(Card.card_list(text))

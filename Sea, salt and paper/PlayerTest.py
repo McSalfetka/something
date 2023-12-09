@@ -12,3 +12,4 @@ def test_player():
     pl = Player(pl_name, Card.card_list(pl_cards))
     assert str(pl_name+': '+pl_cards) == str(pl)
 
+#
