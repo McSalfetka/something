@@ -24,14 +24,14 @@ class Hand:
     def get_playable_cards(self):
         """ Возвращает список пар карт, которые можно было бы сыграть"""
         spis = []
-        spisosn = self.cards.copy()
-        for card1 in spisosn:
-            n = spisosn.index(card1)
-            spisosn.pop(n)
-            for card2 in spisosn:
+        spisosn1 = self.cards.copy()
+        spisosn2 = self.cards.copy()
+        for card1 in spisosn1:
+            n = spisosn1.index(card1)
+            spisosn2.pop(0)
+            for card2 in spisosn2:
                 if Card.accept(Card.create(str(card1)), Card.create(str(card2))):
                     spis.append((str(card1), str(card2)))
-                    spisosn.remove(card2)
         return spis
 
     def remove_card(self, card: Card):
@@ -47,7 +47,7 @@ class Hand:
         return Hand(Card.card_list(text))
 
 
-# text = 'crab_b1 mermaids_w fish_b1 crab_o fish_lg'
+# text = 'swimmer_b1 crab_b1 mermaids_w fish_b1 crab_o fish_bl swimmer_B sharks_bl shells_bl shells_lg'
 # h = Hand(Card.card_list(text))
 # print(h)
 # cl = h.get_playable_cards()

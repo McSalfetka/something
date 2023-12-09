@@ -19,11 +19,20 @@ class Deck:
         """ crab_b1 mermaids_w fish_b1 crab_o fish_lg """
         return ' '.join([str(c) for c in self.cards])
 
-    def draw(self):
+    def show(self):
         """ Взяли из колоды 1 карту и вернули ее."""
-        res = self.cards[-2:]
-        self.cards = self.cards[:-2]
-        return res
+        cards = self.cards[:2]
+        self.cards = self.cards[2:]
+        return [str(c) for c in cards]
+
+    @staticmethod
+    def draw(spisok: list, Wth: int):
+        cards = spisok
+        if Wth == 0:
+            card = cards[0]
+        else:
+            card = cards[1]
+        return card
 
     @staticmethod
     def create(text: str):
@@ -45,12 +54,18 @@ class Heap:
         self.cards.append(card)
 
     def draw(self):
-        res = self.cards[-1:]
+        card = self.cards[-1:]
         self.cards = self.cards[:-1]
-        return res
+        return card
 
     @staticmethod
     def create(text: str):
         return Heap(Card.card_list(text))
 
 
+text = 'crab_b1 mermaids_w fish_b1 crab_o fish_lg'
+deck = Deck(Card.card_list(text))
+print(deck)
+drawn = deck.show()
+print(*drawn)
+print(deck.draw(drawn, 1))

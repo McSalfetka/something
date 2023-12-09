@@ -4,16 +4,18 @@ class Card:
 
         COLORS = ["Blue", 'blue', 'black', 'yellow', 'light green', 'white', 'purple', 'light gray', 'light orange', 'light rose', 'orange']
 
-        COLOR_LETTERS = {"B": 'Blue', 'b1': 'blue', 'bl': 'black', 'y': 'yellow', 'lg': 'light green', 'w': 'white', 'p': 'purple',
+        COLOR_LETTERS = {'B': 'Blue', 'b1': 'blue', 'bl': 'black', 'y': 'yellow', 'lg': 'light green', 'w': 'white', 'p': 'purple',
                          'lgr': 'light gray', 'lo': 'light orange', 'lr': 'light rose', 'o': 'orange'}
 
         def __init__(self, types, color):
                 if types in Card.TYPES:
                         self.types = types
+                else:
+                        raise ValueError(f'Wrong item {types}')
                 if color in Card.COLORS:
                         self.color = color
                 else:
-                        raise ValueError(f'Wrong color {color}')
+                        raise ValueError(f'Wrong item {color}')
 
         def __repr__(self):
                 keyk = ''
@@ -117,6 +119,9 @@ class Card:
                 return cards
 
         def accept(self, some):
-                return self.types == some.types
+                if self.types in ['crab', 'ship', 'swimmer', 'sharks', 'fish'] and some.types in ['crab', 'ship', 'swimmer', 'sharks', 'fish']:
+                        return (self.types == some.types and (some.types != 'swimmer' and some.types != 'sharks') and (self.types != 'swimmer' and self.types != 'sharks')) \
+                       or ((self.types == 'swimmer' and some.types == 'sharks') or (self.types == 'sharks' and some.types == 'swimmer'))
 
-#
+
+# print(Card.accept(Card.create('crab_b1'), Card.create('crab_b1')))

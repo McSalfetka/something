@@ -30,7 +30,7 @@ class Player:
         self.hand.add_card(card)
 
 #
-# text = 'crab_b1 mermaids_w fish_b1 crab_o fish_lg'
+# text = 'swimmer_b1 crab_b1 mermaids_w fish_b1 crab_o fish_bl swimmer_B sharks_bl shells_bl shells_lg'
 # h = list(Hand(Card.card_list(text)))
 # print(h)
 # p = Player('Joe', h)
