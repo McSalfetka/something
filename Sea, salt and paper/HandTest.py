@@ -10,8 +10,8 @@ def test_hand():
 def test_gpc():
     c = 'crab_b1 mermaids_w fish_b1 crab_o fish_lg'
     hand = Hand(Card.card_list(c))
-    cl = hand.get_playable_cards(Card('fish', 'blue'))
-    assert cl == [Card.create('fish_b1'), Card.create('fish_lg')]
+    cl = hand.get_playable_cards()
+    assert cl == [('crab_b1', 'crab_o'), ('fish_b1', 'fish_lg')]
 
 def test_remove_card():
     text = 'crab_b1 mermaids_w fish_b1 crab_o'
