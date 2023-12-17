@@ -1,0 +1,23 @@
+{
+    "deck": "fish_bl shells_lg crab_lgr fish_bl shells_b1 shells_y fish_y mermaids_w crab_b1 shells_bl fish_lg",
+    "players": [
+        {
+            "name": "Bob",
+            "hand": "",
+            "points": 1,
+            "played": "crab_bl crab_lg"
+        },
+        {
+            "name": "Charley",
+            "hand": "",
+            "points": 0,
+            "played": ""
+        }
+    ],
+    "heaps":
+        {
+            "heap1": "swimmer_b1 fish_bl",
+            "heap2": "crab_b1 sharks_b1"
+        },
+    "player_index": 0
+}

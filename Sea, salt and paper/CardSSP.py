@@ -25,7 +25,7 @@ class Card:
                 return f'{self.types}_{keyk}'
 
         def __eq__(self, other):
-                return self.color == other.color and self.types == other.types
+                return self.types == other.types and self.color == other.color
 
         @staticmethod
         def create(text: str):
@@ -125,3 +125,5 @@ class Card:
 
 
 # print(Card.accept(Card.create('crab_b1'), Card.create('crab_b1')))
+# pl = Card.create('SchoolOfFish_b1')
+# print(pl.types == 'SchoolOfFish')

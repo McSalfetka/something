@@ -26,13 +26,30 @@ class Deck:
         return [str(c) for c in cards]
 
     @staticmethod
+    def choose(Which_choose: int | None = None):
+        if Which_choose is None:
+            chosen = int(input('Введите число '))
+            return chosen
+        else:
+            return Which_choose
+
+    @staticmethod
     def draw(spisok: list, Wth: int):
         cards = spisok
-        if Wth == 0:
+        if Wth == 1:
             card = cards[0]
+            cards.remove(cards[0])
         else:
             card = cards[1]
+            cards.remove(cards[1])
         return card
+
+    def draw_for_fish(self):
+        card = self.cards.pop(0)
+        return card
+
+    def initialization(self):
+        return self.cards.pop(0)
 
     @staticmethod
     def create(text: str):
@@ -58,14 +75,25 @@ class Heap:
         self.cards = self.cards[:-1]
         return card
 
+    def draw_for_crabs(self, i: int):
+        card = self.cards[i]
+        self.cards.pop(i)
+        return card
+
     @staticmethod
     def create(text: str):
         return Heap(Card.card_list(text))
 
 
-text = 'crab_b1 mermaids_w fish_b1 crab_o fish_lg'
-deck = Deck(Card.card_list(text))
-print(deck)
-drawn = deck.show()
-print(*drawn)
-print(deck.draw(drawn, 1))
+# text = 'crab_b1 mermaids_w crab_o fish_lg'
+# text2 = ''
+# heap = Heap(Card.card_list(text2))
+# deck = Deck(Card.card_list(text))
+# print(deck)
+# drawn = deck.show()
+# print('s', drawn)
+# print(deck.draw(drawn, Deck.choose()))
+# print(drawn)
+# drawn = ''.join(drawn)
+# heap.put(Card.create(drawn))
+# print('s', heap)

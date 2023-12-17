@@ -27,7 +27,6 @@ class Hand:
         spisosn1 = self.cards.copy()
         spisosn2 = self.cards.copy()
         for card1 in spisosn1:
-            n = spisosn1.index(card1)
             spisosn2.pop(0)
             for card2 in spisosn2:
                 if Card.accept(Card.create(str(card1)), Card.create(str(card2))):
@@ -51,4 +50,4 @@ class Hand:
 # h = Hand(Card.card_list(text))
 # print(h)
 # cl = h.get_playable_cards()
-# print(cl)
+# print(type(cl[0]))
