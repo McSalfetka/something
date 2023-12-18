@@ -7,6 +7,7 @@ from DeckSSP import Deck, Heap
 from PlayerSSP import Player
 from ScoreCountingSSP import Scoring
 from PairEffects import PairsEff
+from HandSSP import Hand
 
 class Game:
     DEFAULT_PLAYER_NAMES = ['Bob', 'Mike']
@@ -32,13 +33,16 @@ class Game:
 
     @staticmethod
     def new_round():
-        player_names = Game.DEFAULT_PLAYER_NAMES
         g = Game()
         g.deck = Deck()
+        g.heap1 = Card.card_list('')
+        g.heap2 = Card.card_list('')
         g.heap1 = Heap([g.deck.initialization()])
         g.heap2 = Heap([g.deck.initialization()])
         g.player_index = 0
-        g.players = [Player(name, Card.card_list(""), 0, Card.card_list("")) for name in player_names]
+        g.current_player.hand = ''
+        g.current_player.played = ''
+        g.players = [Player(name, Card.card_list(''), g.current_player.points, Card.card_list('')) for name in g.DEFAULT_PLAYER_NAMES]
         return g
 
     @property
@@ -47,7 +51,7 @@ class Game:
 
     @property
     def else_player(self):
-        return self.players[self.player_index+1]
+        return self.players[(self.player_index+1) % 2]
 
     # Взятие карты в начале хода или дополнительного хода
     def drawing_card(self):
@@ -67,7 +71,7 @@ class Game:
             print('Выберите карту 1) первая; 2) вторая')
             card = Deck.draw(card1, Deck.choose())
             print(f'Взяли карту {card}')
-            self.current_player.add_card_to_hand(card)
+            self.current_player.add_card_to_hand(Card.create(card))
             print('Куда положить вторую карту: 1) первая стопка сброса; 2) вторая стопка сброса')
             Which_Draw = Deck.choose()
             card1 = ''.join(card1)
@@ -86,6 +90,27 @@ class Game:
             self.current_player.add_card_to_hand(*card)
             print(f'Взяли карту {card}')
         print(self.current_player.hand)
+
+    # def End_of_round(self):
+    #     Scores = Scoring(Card.card_list(str(self.current_player.hand)))
+    #     InHandPoints = Scores.Score_count()
+    #     print('-'*20)
+    #     print(self.current_player.name, InHandPoints)
+    #     print('-'*20)
+    #     if InHandPoints >= 7:
+    #         print('-'*20)
+    #         print('Закончить раунд? 1) Нет; 2) Да; 3) All in(Недоступно)')
+    #         End_of_round = Deck.choose()
+    #         # Завершение раунда, подсчет и запись очков
+    #         if End_of_round == 2:
+    #             self.current_player.add_points(InHandPoints)
+    #             Else_Scores = Scoring(Card.card_list(str(self.else_player.hand)))
+    #             ElseInHand = Else_Scores.Score_count()
+    #             self.else_player.add_points(ElseInHand)
+    #             turn = False
+    #             return turn
+
+
 
     # Украсть карту оппонента
     def Thief_thing(self):
@@ -117,79 +142,88 @@ class Game:
         # print(type(self.current_player.hand))
         running = True
         while running:
+            print('новый раунд')
+            self.new_round()
+            # self.current_player.hand.remove_card('crab_w')
             turn = True
             while turn:
-                turn = False
-            self.drawing_card()
-            # print(type(self.current_player.hand))
-            # self.current_player.hand = Card.card_list(self.current_player.hand)
-            # конец раунда
-            Scores = Scoring(Card.card_list(str(self.current_player.hand)))
-            InHandPoints = Scores.Score_count()
-            if InHandPoints >= 7:
-                print('-'*20)
-                print('Закончить раунд? 1) Нет; 2) да; 3) All in')
-                End_of_round = Deck.choose()
-                # Завершение раунда, подсчет и запись очков
-                if End_of_round == 2:
-                    self.current_player.add_points(InHandPoints)
-                    Else_Scores = Scoring(Card.card_list(str(self.else_player.hand)))
-                    ElseInHand = Else_Scores.Score_count()
-                    self.else_player.add_points(ElseInHand)
-                    return
-
-            # играем пары
-            print('-'*20)
-            print(self.current_player)
-            cards = self.current_player.has_playable_cards()
-            while bool(cards):
+                self.drawing_card()
+                # print(type(self.current_player.hand))
+                # self.current_player.hand = Card.card_list(self.current_player.hand)
+                # конец раунда
+                Scores = Scoring(Card.card_list(str(self.current_player.hand)))
+                InHandPoints = Scores.Score_count()
                 cards = self.current_player.has_playable_cards()
-                print(f'Доступные карты: {cards}')
-                print('Играть пары? 1) Да; 2) Нет')
-                PlayPair = Deck.choose()
-                if cards and PlayPair == 2:
-                    print(f'{self.current_player.name} пасует')
-                    break
+                InHandPoints += len(self.current_player.played)/2+len(cards)
+                print('-'*20)
+                print(self.current_player.name, InHandPoints)
+                print('-'*20)
+                if InHandPoints >= 7:
+                    print('-'*20)
+                    print('Закончить раунд? 1) Нет; 2) Да; 3) All in(Недоступно)')
+                    End_of_round = Deck.choose()
+                    # Завершение раунда, подсчет и запись очков
+                    if End_of_round == 2:
+                        self.current_player.add_points(InHandPoints)
+                        Else_Scores = Scoring(Card.card_list(str(self.else_player.hand)))
+                        ElseInHand = Else_Scores.Score_count()
+                        self.else_player.add_points(ElseInHand)
+                        turn = False
 
-                print('Какую пару сыграть?(номер пары)')
-                WhichPair = Deck.choose()
-                if PlayPair > 0 and PlayPair <= len(cards)+1:
-                    # print(self.current_player.hand)
-                    print('Выбранная пара')
-                    # print(cards[WhichPair-1])
-                    self.current_player.play_card(Card.create(cards[WhichPair-1][0]))
-                    self.current_player.play_card(Card.create(cards[WhichPair-1][1]))
-                    Scores.Score_from_pair()
-                    Eff = PairsEff(cards[WhichPair-1])
-                    Reaction = Eff.pair_react()
+                # играем пары
+                print('-'*20)
+                print(self.current_player)
+                # cards = self.current_player.has_playable_cards()
+                while bool(cards):
+                    # cards = self.current_player.has_playable_cards()
+                    print(f'Доступные карты: {cards}')
+                    print('Играть пары? 1) Да; 2) Нет')
+                    PlayPair = Deck.choose()
+                    if cards and PlayPair == 2:
+                        print(f'{self.current_player.name} пасует')
+                        break
 
-                    if Reaction == 'Card_From_Heap':
-                        self.draw_from_heap()
-                    elif Reaction == 'Addition_turn':
-                        self.drawing_card()
-                    elif Reaction == 'Card_From_Library':
-                        print('-'*20)
-                        print('Полученная карта')
-                        c = self.deck.draw_for_fish()
-                        print(c)
-                        self.current_player.add_card_to_hand(c)
+                    print('Какую пару сыграть?(номер пары)')
+                    WhichPair = Deck.choose()
+                    if WhichPair > 0 and WhichPair <= len(cards)+1:
+                        # print(self.current_player.hand)
+                        print('Выбранная пара')
+                        print(*cards[WhichPair-1])
+                        self.current_player.play_card(Card.create(cards[WhichPair-1][0]))
+                        self.current_player.play_card(Card.create(cards[WhichPair-1][1]))
+                        # InHandPoints+=1
+                        Eff = PairsEff(cards[WhichPair-1])
+                        Reaction = Eff.pair_react()
+
+                        if Reaction == 'Card_From_Heap':
+                            self.draw_from_heap()
+                        elif Reaction == 'Addition_turn':
+                            self.drawing_card()
+                        elif Reaction == 'Card_From_Library':
+                            print('-'*20)
+                            print('Полученная карта')
+                            c = self.deck.draw_for_fish()
+                            print(c)
+                            self.current_player.add_card_to_hand(c)
+                        else:
+                            c = self.Thief_thing()
+                            print(f'Украденная карта {c}')
+                            self.current_player.add_card_to_hand(c)
+                        cards = self.current_player.has_playable_cards()
+                        cards.pop(WhichPair-1)
+
                     else:
-                        c = self.Thief_thing()
-                        print(f'Украденная карта {c}')
-                        self.current_player.add_card_to_hand(c)
-
-                    cards.pop(WhichPair-1)
+                        print('Пары с указанным номером нет')
                 else:
-                    print('Пары с указанным номером нет')
-            else:
-                print(f'{self.current_player.name} пасует')
-            print(self.current_player)
+                    print(f'{self.current_player.name} пасует')
+                print(self.current_player)
 
-            # проверяем условие победы, если победили, выходим с индексом игрока
-            if self.current_player.enough_points():
-                return
+                # проверяем условие победы, если победили, выходим с индексом игрока
+                if self.current_player.enough_points():
+                    turn = False
+                    running = False
 
-            self.next_player()
+                self.next_player()
 
     def next_player(self):
         """ Переходим к следующему игроку. """
@@ -211,7 +245,7 @@ def new_game():
 def load_game(filename: str):
     with open(filename) as fin:
         d2 = json.load(fin)
-    g = Game.create(d2)
+    g = Game.new_round()
     g.run()
     g.congratulations()
 
