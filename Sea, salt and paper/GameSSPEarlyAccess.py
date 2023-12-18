@@ -44,7 +44,7 @@ class Game:
         g.current_player.played = ''
         g.players = [Player(name, Card.card_list(''), g.current_player.points, Card.card_list('')) for name in g.DEFAULT_PLAYER_NAMES]
         return g
-
+#
     @property
     def current_player(self):
         return self.players[self.player_index]
