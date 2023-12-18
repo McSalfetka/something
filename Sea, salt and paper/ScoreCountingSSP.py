@@ -13,6 +13,15 @@ class Scoring:
     def Score_from_pair(self):
         self.counters += 1
 
+    def max_color(self):
+        from collections import Counter
+        Ccard = [card.color for card in self.cards]
+        Ccard = Counter(Ccard)
+        # print(Ccard)
+        max_key = max(Ccard, key=Ccard.get)
+        self.counters = Ccard[max_key]
+        return self.counters
+
     def Score_count(self):
         tcards = [card.types for card in self.cards]
         mermaids = 0
@@ -41,14 +50,17 @@ class Scoring:
         if mermaids == 4:
             self.counters = 99999999
             return self.counters
-        for i in range(octopus):
-            self.counters += i*3
-        for i in range(shells):
-            self.counters += i*2
-        for i in range(sailors):
-            self.counters += i*5
-            if 'captain' in tcards:
-                self.counters += 3*sailors
+        # for i in range(octopus):
+        if octopus > 0:
+            self.counters += (octopus-1)*3
+        # for i in range(shells):
+        if shells > 0:
+            self.counters += (shells-1)*2
+        # for i in range(sailors):
+        if sailors > 0:
+            self.counters += (sailors-1)*5
+        if 'captain' in tcards:
+            self.counters += 3*sailors
 
         if 'lighthouse' in tcards:
             self.counters += ships
@@ -77,6 +89,6 @@ class Scoring:
         return self.counters
 
 
-# text = 'mermaids_w mermaids_w'
-# score = Scoring(Card.card_list(text))
-# print(score.Score_count())
+text = 'captain_lo shells_bl sailors_o penguins_lr fish_b1 sailors_lr'
+score = Scoring(Card.card_list(text))
+print(score.Score_count())
